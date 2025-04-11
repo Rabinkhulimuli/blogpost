@@ -44,7 +44,7 @@ export  function AuthProvider({children}:{children:React.ReactNode}) {
         setUser(null)
     }
     const signin=(user:User)=> {
-        localStorage.setItems("user",JSON.stringify(user))
+        localStorage.setItem("user",JSON.stringify(user))
     }
   return (
     <AuthContextG.Provider value={{user,setUser,isLoggedIn,setIsLoggedIn,blogs,setBlogs,login,logout,deleteUser,signin}}>
