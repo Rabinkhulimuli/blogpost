@@ -11,15 +11,15 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ email: "", password: "" });
-  const {login:Login}= useAuth()
-  const router=useRouter()
+  const { login: Login } = useAuth();
+  const router = useRouter();
   const handleLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     const userData = localStorage.getItem("user");
     const user = userData ? JSON.parse(userData) : null;
     if (!user) {
-      router.push("/signup")
+      router.push("/signup");
     }
     if (user.email !== email) {
       setError((prev) => ({ ...prev, email: "email not found" }));
@@ -32,8 +32,8 @@ export default function Page() {
       const check = await login(password, user.password);
       if (check.isMatched) {
         setError((prev) => ({ ...prev, password: "" }));
-        Login(user)
-        router.push("/blog")
+        Login(user);
+        router.push("/blog");
       } else {
         setError((prev) => ({ ...prev, password: "incorrect password" }));
         setLoading(false);
@@ -69,7 +69,7 @@ export default function Page() {
                   Email
                 </label>
                 <input
-                required
+                  required
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                   className="border-2  transition-all ease-in-out duration-300 focus:ring-2 focus:ring-yellow-400 w-full border-white rounded-xl px-2 py-3 outline-none"
@@ -88,7 +88,7 @@ export default function Page() {
                   Password
                 </label>
                 <input
-                required
+                  required
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                   className="border-2  transition-all ease-in-out duration-300 focus:ring-2 focus:ring-yellow-400 w-full border-white rounded-xl px-2 py-3 outline-none"
@@ -111,7 +111,10 @@ export default function Page() {
                 {loading ? "loging ... " : "Log In"}
               </button>
               <div className="text-center">
-                Don&apos;t have an account?<Link href="/signup" className="underline capitalize">signup</Link>{" "}
+                Don&apos;t have an account?
+                <Link href="/signup" className="underline capitalize">
+                  signup
+                </Link>{" "}
               </div>
             </form>
           </div>

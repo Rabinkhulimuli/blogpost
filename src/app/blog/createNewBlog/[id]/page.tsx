@@ -1,17 +1,17 @@
 "use client";
 import { useAuth } from "@/components/AuthProvider";
-import { redirect, useParams, useRouter} from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function CreateBlog() {
-  const{blogs,setBlogs,isLoggedIn}= useAuth()
+  const { blogs, setBlogs, isLoggedIn } = useAuth();
   const [isClient, setIsClient] = useState(false);
-  const[isLoading,setIsLoading]= useState(false)
-  const[error,setError]= useState("")
-  const[imageError,setimageError]= useState("")
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [imageError, setimageError] = useState("");
   const params = useParams();
   const { id } = params;
-  const router= useRouter()
+  const router = useRouter();
   const [form, setForm] = useState({
     id: "",
     title: "",
@@ -22,32 +22,32 @@ export default function CreateBlog() {
     date: "",
   });
   useEffect(() => {
-    setIsClient(true)
+    setIsClient(true);
   }, []);
   useEffect(() => {
     if (id === "new") return;
-    if(!blogs) {
-      setError("there is no blog")
-      return
+    if (!blogs) {
+      setError("there is no blog");
+      return;
     }
-    if(!isLoggedIn){
-      redirect("/signup")
+    if (!isLoggedIn) {
+      redirect("/signup");
     }
     const selectedBlog = blogs.find((blog) => blog.id === id);
-    if (!selectedBlog){
-      setError("selected blog doesnt exist")
-      return
+    if (!selectedBlog) {
+      setError("selected blog doesnt exist");
+      return;
     }
     setForm(selectedBlog);
-  }, [id, blogs,isLoggedIn]);
+  }, [id, blogs, isLoggedIn]);
   if (!isClient) return <div>Loading ..</div>;
-  const handleSubmit = (e:React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    if(!handleImage(form.image)) {
-      setimageError("supproted image is from istock images only")
-      setIsLoading(false)
-      return
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    if (!handleImage(form.image)) {
+      setimageError("supproted image is from istock images only");
+      setIsLoading(false);
+      return;
     }
     if (id === "new") {
       const newBlog = {
@@ -55,17 +55,17 @@ export default function CreateBlog() {
         id: crypto.randomUUID(),
         date: new Date().toISOString().split("T")[0],
       };
-      const updatedblog =!blogs?newBlog: [ newBlog,...blogs];
+      const updatedblog = !blogs ? newBlog : [newBlog, ...blogs];
       localStorage.setItem("blogPost", JSON.stringify(updatedblog));
-      setBlogs((blog) => [newBlog,...blog]);
+      setBlogs((blog) => [newBlog, ...blog]);
     } else {
-      if(!blogs) return
+      if (!blogs) return;
       const updatedblogs = blogs.map((blog) => (blog.id === id ? form : blog));
       localStorage.setItem("blogPost", JSON.stringify(updatedblogs));
       setBlogs(updatedblogs);
     }
-    setIsLoading(false)
-   router.push('/')
+    setIsLoading(false);
+    router.push("/");
   };
 
   const handleChange = (
@@ -74,13 +74,13 @@ export default function CreateBlog() {
     const { name, value } = e.target;
     setForm((eh) => ({ ...eh, [name]: value }));
   };
-  const handleImage=(image:string)=> {
-    if(image.startsWith("https://media.istockphoto.com")) return true
-    else return false
-  }
+  const handleImage = (image: string) => {
+    if (image.startsWith("https://media.istockphoto.com")) return true;
+    else return false;
+  };
   return (
     <div className="text-black">
-      {error.length>0 && <div className="text-red-700">{error} </div> }
+      {error.length > 0 && <div className="text-red-700">{error} </div>}
       <form
         onSubmit={handleSubmit}
         className="space-y-4 bg-white p-6 rounded-md shadow-md"
@@ -126,8 +126,10 @@ export default function CreateBlog() {
           rows={2}
           required
         />
-        <label htmlFor="">Image <sub>only istock image is supported</sub> </label>
-        {imageError&& <span className="text-red-500">{imageError} </span> }
+        <label htmlFor="">
+          Image <sub>only istock image is supported</sub>{" "}
+        </label>
+        {imageError && <span className="text-red-500">{imageError} </span>}
         <input
           type="text"
           name="image"
@@ -143,7 +145,13 @@ export default function CreateBlog() {
           disabled={isLoading}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition capitalize"
         >
-         {isLoading?id=="new"?"creating blog":"updating blog":id=="new"?" Create Blog":"update blog"}
+          {isLoading
+            ? id == "new"
+              ? "creating blog"
+              : "updating blog"
+            : id == "new"
+            ? " Create Blog"
+            : "update blog"}
         </button>
       </form>
     </div>

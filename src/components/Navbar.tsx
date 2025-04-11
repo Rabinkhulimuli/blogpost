@@ -13,14 +13,14 @@ export default function Navbar() {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  useEffect(()=> {
-    if(active){
-      const timeout=setTimeout(()=> {
-        setActive(false)
-      },5000)
-      return ()=> clearTimeout(timeout)
+  useEffect(() => {
+    if (active) {
+      const timeout = setTimeout(() => {
+        setActive(false);
+      }, 5000);
+      return () => clearTimeout(timeout);
     }
-  },[active])
+  }, [active]);
   if (!client) return <div>loading...</div>;
   const handleLogOut = () => {
     logout();
@@ -34,7 +34,7 @@ export default function Navbar() {
             newPath == "" ? "underline" : ""
           }`}
           href="/"
-          onClick={()=> setActive(false)}
+          onClick={() => setActive(false)}
         >
           Home
         </Link>
@@ -43,7 +43,7 @@ export default function Navbar() {
             newPath == "blog" ? "underline" : ""
           }`}
           href="/blog"
-          onClick={()=> setActive(false)}
+          onClick={() => setActive(false)}
         >
           Blog
         </Link>
@@ -72,12 +72,16 @@ export default function Navbar() {
         {isLoggedIn && (
           <div className="relative">
             <div
-            onClick={()=> setActive(!active)}
+              onClick={() => setActive(!active)}
               className={`transition-all cursor-pointer ease-out duration-500 hover:bg-black hover:text-white py-4  sm:w-32 text-center`}
             >
               Account{" "}
             </div>
-            <div className={`${active?"flex":"hidden"} shadow-md rounded-md absolute z-10 text-black bg-white top-15 sm:top-18 flex-col`}>
+            <div
+              className={`${
+                active ? "flex" : "hidden"
+              } shadow-md rounded-md absolute z-10 text-black bg-white top-15 sm:top-18 flex-col`}
+            >
               <div className="text-center text-black/50">{user?.name}</div>
               <button
                 className={`transition-all border-b cursor-pointer ease-out duration-500 hover:bg-black hover:text-white py-1 px-2 sm:py-4  sm:w-32 text-center`}
