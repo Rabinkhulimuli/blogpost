@@ -8,6 +8,7 @@ export default function CreateBlog() {
   const [isClient, setIsClient] = useState(false);
   const[isLoading,setIsLoading]= useState(false)
   const[error,setError]= useState("")
+  const[imageError,setimageError]= useState("")
   const params = useParams();
   const { id } = params;
   const router= useRouter()
@@ -43,6 +44,11 @@ export default function CreateBlog() {
   const handleSubmit = (e:React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    if(!handleImage(form.image)) {
+      setimageError("supproted image is from istock images only")
+      setIsLoading(false)
+      return
+    }
     if (id === "new") {
       const newBlog = {
         ...form,
@@ -68,7 +74,10 @@ export default function CreateBlog() {
     const { name, value } = e.target;
     setForm((eh) => ({ ...eh, [name]: value }));
   };
-  
+  const handleImage=(image:string)=> {
+    if(image.startsWith("https://media.istockphoto.com")) return true
+    else return false
+  }
   return (
     <div>
       {error.length>0 && <div className="text-red-700">{error} </div> }
@@ -118,6 +127,7 @@ export default function CreateBlog() {
           required
         />
         <label htmlFor="">Image <sub>only istock image is supported</sub> </label>
+        {imageError&& <span className="text-red-500">{imageError} </span> }
         <input
           type="text"
           name="image"

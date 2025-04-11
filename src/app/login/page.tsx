@@ -2,9 +2,9 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { login } from "../actions/auth";
-import { redirect } from "next/navigation";
 import Image from "next/image";
 import { useAuth } from "@/components/AuthProvider";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -12,13 +12,14 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ email: "", password: "" });
   const {login:Login}= useAuth()
+  const router=useRouter()
   const handleLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     const userData = localStorage.getItem("user");
     const user = userData ? JSON.parse(userData) : null;
     if (!user) {
-      redirect("/signup");
+      router.push("/signup")
     }
     if (user.email !== email) {
       setError((prev) => ({ ...prev, email: "email not found" }));
@@ -32,7 +33,7 @@ export default function Page() {
       if (check.isMatched) {
         setError((prev) => ({ ...prev, password: "" }));
         Login(user)
-        redirect("/blog")
+        router.push("/blog")
       } else {
         setError((prev) => ({ ...prev, password: "incorrect password" }));
         setLoading(false);

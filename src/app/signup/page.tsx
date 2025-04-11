@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useActionState } from "react";
 import { signup } from "../actions/auth";
-import { redirect } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { FormState } from "../lib/type";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,14 +15,18 @@ export default function SignUP() {
     user: undefined,
   };
   const [state, action, pending] = useActionState(signup, initialState);
-  const {signin}= useAuth()
+  const {signin,setIsLoggedIn,isLoggedIn}= useAuth()
+  const router=useRouter()
   useEffect(() => {
+    if(localStorage.getItem("loggedIn")=="true"&& !isLoggedIn){
+      setIsLoggedIn(true)
+    }
     if (state?.message === "success") {
       if(state.user)
       signin(state.user)
-      redirect("/login")
+      router.push("/login")
     }
-  }, [state?.user, state?.message,signin]);
+  }, [state?.user, state?.message,signin,isLoggedIn,setIsLoggedIn,router]);
   return (
     <div className="relative">
       <Image

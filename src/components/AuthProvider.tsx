@@ -29,18 +29,30 @@ export  function AuthProvider({children}:{children:React.ReactNode}) {
         setBlogs(sortedBlog)
         localStorage.setItem("blogPost",JSON.stringify(sortedBlog))
     },[])
+    useEffect(()=> {
+        const loggedIn = localStorage.getItem("loggedIn")
+    const localUser = localStorage.getItem("user")
+
+    if (loggedIn === "true" && localUser) {
+        setIsLoggedIn(true)
+        setUser(JSON.parse(localUser))
+    }
+    },[])
     const login=(user:User)=>{
         localStorage.setItem("user",JSON.stringify(user))
+        localStorage.setItem("loggedIn","true")
         setIsLoggedIn(true)
         setUser(user)
     }
     const deleteUser=()=> {
-        localStorage.setItem("user","")
+        localStorage.removeItem("user")
+        localStorage.removeItem("loggedIn")
         setIsLoggedIn(false)
         setUser(null)
     }
     const logout=()=> {
         setIsLoggedIn(false)
+        localStorage.setItem("loggedIn","false")
         setUser(null)
     }
     const signin=(user:User)=> {
