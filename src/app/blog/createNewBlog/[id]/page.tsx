@@ -79,7 +79,7 @@ export default function CreateBlog() {
     else return false
   }
   return (
-    <div>
+    <div className="text-black">
       {error.length>0 && <div className="text-red-700">{error} </div> }
       <form
         onSubmit={handleSubmit}
