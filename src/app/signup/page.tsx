@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useActionState } from "react";
 import { signup } from "../actions/auth";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { FormState } from "../lib/type";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +25,11 @@ export default function SignUP() {
       if (state.user) signin(state.user);
       router.push("/login");
     }
+   
   }, [state?.user, state?.message, signin, isLoggedIn, setIsLoggedIn, router]);
+  if(isLoggedIn){
+    redirect('/blog')
+  }
   return (
     <div className="relative">
       <Image

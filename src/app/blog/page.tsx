@@ -25,7 +25,7 @@ export default function Blog() {
   };
   const handleCloud = () => {
     localStorage.setItem("blogPost", JSON.stringify(blogPosts));
-    window.location.reload();
+    setBlogs(blogPosts)
   };
   if (blogs.length == 0)
     return (
