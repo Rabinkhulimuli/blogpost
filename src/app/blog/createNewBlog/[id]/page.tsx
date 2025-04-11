@@ -55,9 +55,9 @@ export default function CreateBlog() {
         id: crypto.randomUUID(),
         date: new Date().toISOString().split("T")[0],
       };
-      const updatedblog =!blogs?newBlog: [...blogs, newBlog];
+      const updatedblog =!blogs?newBlog: [ newBlog,...blogs];
       localStorage.setItem("blogPost", JSON.stringify(updatedblog));
-      setBlogs((blog) => [...blog, newBlog]);
+      setBlogs((blog) => [newBlog,...blog]);
     } else {
       if(!blogs) return
       const updatedblogs = blogs.map((blog) => (blog.id === id ? form : blog));

@@ -1,5 +1,6 @@
 "use client";
 import {  useAuth } from "@/components/AuthProvider";
+import { blogPosts } from "@/config/blog";
 import Image from "next/image";
 import { redirect, usePathname, useRouter } from "next/navigation";
 
@@ -24,9 +25,26 @@ export default function Blog() {
   };
 
   if (blogs.length == 0) return <div>There is no blogs. </div>;
-  
+  const handleCloud = () => {
+    localStorage.setItem("blogPost", JSON.stringify(blogPosts));
+    window.location.reload();
+  };
   return (
     <div className="space-y-12 ">
+     {pathname!=="/"&& <div className="flex flex-col my-12  gap-4 ">
+        <button
+          className="bg-blue-600 capitalize  text-white px-4 py-8 rounded hover:bg-blue-700 transition"
+          onClick={handleCloud}
+        >
+          load data from cloud
+        </button>
+        <button
+          className="bg-blue-600 capitalize text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          onClick={() => router.push("/blog/createNewBlog/new")}
+        >
+          Create blog
+        </button>
+      </div>}
       {blogs.map((blog) => <div key={blog.id}>
           <div>
             <Image
